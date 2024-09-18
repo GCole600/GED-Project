@@ -8,37 +8,37 @@ public class InputManager : MonoBehaviour
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private MouseLook mouseLook;
     
-    IA_PlayerControls controls;
-    private IA_PlayerControls.GroundMovementActions groundMovement;
+    IA_PlayerControls _controls;
+    private IA_PlayerControls.GroundMovementActions _groundMovement;
 
-    private Vector2 horizontalInput;
-    private Vector2 mouseInput;
+    private Vector2 _horizontalInput;
+    private Vector2 _mouseInput;
 
     private void Awake()
     {
-        controls = new IA_PlayerControls();
-        groundMovement = controls.GroundMovement;
+        _controls = new IA_PlayerControls();
+        _groundMovement = _controls.GroundMovement;
 
-        groundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
-        groundMovement.Jump.performed += _ => movement.OnJumpPressed();
+        _groundMovement.HorizontalMovement.performed += ctx => _horizontalInput = ctx.ReadValue<Vector2>();
+        _groundMovement.Jump.performed += _ => movement.OnJumpPressed();
 
-        groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
-        groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
+        _groundMovement.MouseX.performed += ctx => _mouseInput.x = ctx.ReadValue<float>();
+        _groundMovement.MouseY.performed += ctx => _mouseInput.y = ctx.ReadValue<float>();
     }
 
     private void Update()
     {
-        movement.ReceiveInput(horizontalInput);
-        mouseLook.ReceiveInput(mouseInput);
+        movement.ReceiveInput(_horizontalInput);
+        mouseLook.ReceiveInput(_mouseInput);
     }
 
     private void OnEnable()
     {
-        controls.Enable();
+        _controls.Enable();
     }
 
     private void OnDestroy()
     {
-        controls.Disable();
+        _controls.Disable();
     }
 }

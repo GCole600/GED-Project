@@ -11,23 +11,23 @@ public class MouseLook : MonoBehaviour
     [SerializeField] private Transform playerCamera;
     [SerializeField] private float xClamp = 85f;
     
-    private float mouseX, mouseY;
-    private float xRotation = 0f;
+    private float _mouseX, _mouseY;
+    private float _xRotation = 0f;
     
     private void Update()
     {
-        transform.Rotate(Vector3.up, mouseX * Time.deltaTime);
+        transform.Rotate(Vector3.up, _mouseX * Time.deltaTime);
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -xClamp, xClamp);
+        _xRotation -= _mouseY;
+        _xRotation = Mathf.Clamp(_xRotation, -xClamp, xClamp);
         Vector3 targetRotation = transform.eulerAngles;
-        targetRotation.x = xRotation;
+        targetRotation.x = _xRotation;
         playerCamera.eulerAngles = targetRotation;
     }
 
     public void ReceiveInput(Vector2 mouseInput)
     {
-        mouseX = mouseInput.x * sensitivityX;
-        mouseY = mouseInput.y * sensitivityY;
+        _mouseX = mouseInput.x * sensitivityX;
+        _mouseY = mouseInput.y * sensitivityY;
     }
 }

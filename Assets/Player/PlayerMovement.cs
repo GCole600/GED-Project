@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Chapter.Singleton;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -11,39 +13,39 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpHeight = 3.5f;
     [SerializeField] float gravity = -30f;
     
-    private Vector2 horizontalInput;
-    private Vector3 verticalVelocity = Vector3.zero;
+    private Vector2 _horizontalInput;
+    private Vector3 _verticalVelocity = Vector3.zero;
 
-    private bool jump;
-    private bool isGrounded;
+    private bool _jump;
+    private bool _isGrounded;
     
     private void Update()
     {
-        isGrounded = controller.isGrounded;
+        _isGrounded = controller.isGrounded;
 
-        if (isGrounded) { verticalVelocity.y = 0; }
+        if (_isGrounded) { _verticalVelocity.y = 0; }
 
         Vector3 horizontalVelocity =
-            (transform.right * horizontalInput.x + transform.forward * horizontalInput.y) * speed;
+            (transform.right * _horizontalInput.x + transform.forward * _horizontalInput.y) * speed;
         controller.Move(horizontalVelocity * Time.deltaTime);
 
-        if (jump && isGrounded)
+        if (_jump && _isGrounded)
         {
-            verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
-            jump = false;
+            _verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
+            _jump = false;
         }
         
-        verticalVelocity.y += gravity * Time.deltaTime;
-        controller.Move(verticalVelocity * Time.deltaTime);
+        _verticalVelocity.y += gravity * Time.deltaTime;
+        controller.Move(_verticalVelocity * Time.deltaTime);
     }
 
     public void OnJumpPressed()
     {
-        jump = true;
+        _jump = true;
     }
 
-    public void ReceiveInput(Vector2 _horizontalInput)
+    public void ReceiveInput(Vector2 horizontalInput)
     {
-        horizontalInput = _horizontalInput;
+        this._horizontalInput = horizontalInput;
     }
 }
